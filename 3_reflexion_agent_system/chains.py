@@ -1,7 +1,7 @@
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 import datetime
 from langchain_openai import ChatOpenAI
-from schema import AnswerQuestion
+from schema import AnswerQuestion, ReviseAnswer
 from langchain_core.output_parsers.openai_tools import PydanticToolsParser
 from langchain_core.messages import HumanMessage
 from dotenv import load_dotenv
@@ -37,6 +37,25 @@ llm = ChatOpenAI(model="gpt-4o")
 first_responder_chain= first_responder_prompt_template | llm.bind_tools(
     tools=[AnswerQuestion],
     tool_choice='AnswerQuestion'#mandating llm to use only this tool
+) | pydantic_parser
+
+
+# REVISOR
+
+revisor_instruction = """Revise your previous answer using the new information.
+    -You should use the previous critique to add important information to your answer
+    -You MUST include numerical citations in your answer to ensure it can be verified
+    -Add a 'Refrences' section at the bottom of your answer (which does not count towards the word limit). In the form of:
+        -[1] https://example.com
+        -[2] https://example.com
+    -You should use your previous critique to remove superfluous information from your response and make sure it is not more than 250 words.
+        """
+
+revisor_chain = actor_prompt_template.partial(
+    first_instruction=revisor_instruction
+) | llm.bind_tools(
+    tools=[ReviseAnswer],
+    tool_choice="ReviseAnswer"
 ) | pydantic_parser
 
 response = first_responder_chain.invoke({
