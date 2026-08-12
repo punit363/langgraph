@@ -1,4 +1,4 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain.agents import initialize_agent, tool
 from langchain_community.tools import TavilySearchResults
 import datetime
@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-3.5-flash")
+llm = ChatOpenAI(model="gpt-4o")
 
 search_tool = TavilySearchResults(search_depth="basic")
 

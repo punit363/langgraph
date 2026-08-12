@@ -1,5 +1,8 @@
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 generation_prompt = ChatPromptTemplate.from_messages(
     [
@@ -24,7 +27,7 @@ reflection_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-llm =ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+llm = ChatOpenAI(model="gpt-4o")
 
 generation_chain = generation_prompt | llm
 reflection_chain = reflection_prompt | llm
