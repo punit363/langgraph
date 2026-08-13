@@ -5,7 +5,7 @@ from langchain_community.tools import TavilySearchResults
 
 tavily_tool = TavilySearchResults(max_results=5)
 
-def executeTools(state:List[BaseMessage])->List[BaseMessage]:
+def execute_tools(state:List[BaseMessage])->List[BaseMessage]:
     last_ai_message = state[-1]
     
 

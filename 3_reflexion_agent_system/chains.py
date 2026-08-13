@@ -37,7 +37,9 @@ llm = ChatOpenAI(model="gpt-4o")
 first_responder_chain= first_responder_prompt_template | llm.bind_tools(
     tools=[AnswerQuestion],
     tool_choice='AnswerQuestion'#mandating llm to use only this tool
-) | pydantic_parser
+) 
+
+validator = PydanticToolsParser(tools=[AnswerQuestion])
 
 
 # REVISOR
@@ -56,10 +58,10 @@ revisor_chain = actor_prompt_template.partial(
 ) | llm.bind_tools(
     tools=[ReviseAnswer],
     tool_choice="ReviseAnswer"
-) | pydantic_parser
+)
 
-response = first_responder_chain.invoke({
-    "messages":[HumanMessage(content="Write me Blog on gRPC protocol with key findings like history, problem why it was created, how it solves that, how it works, where it is used etc")]
-})
+# response = first_responder_chain.invoke({
+#     "messages":[HumanMessage(content="Write me Blog on gRPC protocol with key findings like history, problem why it was created, how it solves that, how it works, where it is used etc")]
+# })
 
-print(f"RESPONSE: {response}")
+# print(f"RESPONSE: {response}")
