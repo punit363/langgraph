@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-pydantic_parser = PydanticToolsParser(tools=[AnswerQuestion])
+pydantic_parser = PydanticToolsParser(tools=[AnswerQuestion, ReviseAnswer])
 
 #Actor Agent Prompt
 actor_prompt_template = ChatPromptTemplate.from_messages(
