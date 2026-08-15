@@ -3,14 +3,18 @@ from langgraph.graph import StateGraph, add_messages, END
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.tools import TavilySearchResults
-from langgraph.checkpoint.memory import MemorySaver
+# from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.prebuilt import ToolNode
 from dotenv import load_dotenv
+import sqlite3
 
 load_dotenv()
 
 llm = ChatOpenAI(model="gpt-4o")
-memory = MemorySaver()
+# memory = MemorySaver()
+sqlite_connect = sqlite3.connect("checkpoint.sqlite", check_same_thread=False)
+memory = SqliteSaver(sqlite_connect)
 
 tool = TavilySearchResults(max_results=2)
 tools = [tool]
